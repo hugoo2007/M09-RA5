@@ -25,13 +25,25 @@ public class Root13 {
             char caracter = chain.charAt(i);
             int newPos = 0;
             int posArray = 0;
-            if(Character.isLetter(caracter)) {
+            boolean upper = false;
+            boolean lower = false;
+            if(IsLetter(caracter)) {
             for(int j = 0; j < majuscules.length; j++) {
-                if(majuscules[j] == caracter || minuscules[j] == caracter) posArray = j;
+                if(majuscules[j] == caracter) {
+                    posArray = j;
+                    upper = true;
+                    lower = false;
+                    break;
+                } else if(minuscules[j] == caracter) {
+                    posArray = j;
+                    lower = true;
+                    upper = false;
+                    break;
+                }
             }
             newPos = (posArray + 13) % majuscules.length;
-            if(Character.isUpperCase(caracter)) xifrat+=majuscules[newPos];
-            else xifrat+=minuscules[newPos];
+            if(upper) xifrat+=majuscules[newPos];
+            else if(lower) xifrat+=minuscules[newPos];
             } else {
                 xifrat+=caracter;
             }
@@ -42,20 +54,40 @@ public class Root13 {
     public static String desxifraRot13(String chain) {
         String desxifrat = "";
         for(int i = 0; i < chain.length(); i++) {
+            boolean lower = false;
+            boolean upper = false;
             char caracter = chain.charAt(i);
             int newPos = 0;
             int posArray = 0;
-            if(Character.isLetter(caracter)) {
-                for(int j = 0; j < majuscules.length; j++) {
-                    if(majuscules[j] == caracter || minuscules[j] == caracter) posArray = j;
+            if(IsLetter(caracter)) {
+                for(int j = 0; j < majuscules.length; j ++) {
+                    if(majuscules[j] == caracter) {
+                        posArray = j;
+                        upper = true;
+                        lower = false;
+                        break;
+                    } else if(minuscules[j] == caracter) {
+                        posArray = j;
+                        lower = true;
+                        upper = false;
+                        break;
+                    }
                 }
                 newPos = (posArray - 13 + majuscules.length) % majuscules.length;
-                if(Character.isUpperCase(caracter)) desxifrat+=majuscules[newPos];
-                else desxifrat+=minuscules[newPos];
+                if(upper) desxifrat+=majuscules[newPos];
+                else if(lower) desxifrat+=minuscules[newPos];
             } else {
                 desxifrat+=caracter;
             }
         }
         return desxifrat;
+    }
+
+    public static  boolean IsLetter(char caracter) {
+        caracter = Character.toUpperCase(caracter);
+        for(int i = 0; i < majuscules.length; i++) {
+            if(caracter == majuscules[i]) return true;
+        }
+        return false;
     }
 }
