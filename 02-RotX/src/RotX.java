@@ -7,71 +7,74 @@ public class RotX {
         String[] msgs = {"ABC","XYZ","Hola, Mr. calçot", "Perdó, per tu què és?"};
         int[] pos = {0, 2, 4, 6};
         String[] msgsXifrats = new String[msgs.length];
-        for(int i = 0; i < majuscules.length; i++) {
-            if(i < pos.length) {
-                msgsXifrats[i] = xifraRotX(msgs[i], pos[i]);
-            } else {
-                break;
-            }
+
+        System.out.println("\nXifrat\n---------");
+        for(int i = 0; i < msgs.length; i++) {
+            msgsXifrats[i] = xifraRotX(msgs[i], pos[i]);
+            System.out.printf("(%d) %-23s => %s%n", pos[i], msgs[i], msgsXifrats[i]);
         }
-        for(String msg : msgsXifrats) {
-            System.out.println(msg);
+
+        System.out.println("\nDesxifrat\n---------");
+        int desxfr = 0;
+        for(String msg: msgsXifrats) {
+            System.out.printf("(%d) %-23s => %s%n", desxfr, msg, desxifraRotX(msg, desxfr));
+            desxfr+=2;
         }
+
+        System.out.println();
+        forcaBrutaRotX(msgsXifrats[msgsXifrats.length - 1]);
     }
 
     public static String xifraRotX(String cadena, int desplaçament) {
         String xifrat= "";
         if(desplaçament == 0) {
-            System.out.println(cadena);
             return cadena;
         }
         for(int i = 0; i < cadena.length(); i++) {
             char caracter = cadena.charAt(i);
-            boolean maj = false;
-            boolean min = false;
-            if(isLetter(caracter)) {
-                int pos = 0;
-                for(int j = 0; j < majuscules.length; j++) {
-                    if(caracter == majuscules[j]) {
-                        System.out.println("Es maj");
-                        maj = true;
-                        min = false;
-                        pos = j;
-                        break;
-                    } else if(caracter == minuscules[j]) {
-                        System.out.println("Es min");
-                        min = true;
-                        maj = false;
-                        pos = j;
-                        break;
-                    }
-                }
-                int xifr = (pos + desplaçament) % majuscules.length;
-                if(maj) xifrat+=majuscules[xifr];
-                else if(min) xifrat+=minuscules[xifr]; 
-            } else xifrat+=caracter;
+            xifrat+=isLetter(caracter) != -1 ? rota(caracter, isLetter(caracter), desplaçament, true) : caracter;
         }
        return xifrat;
     }
 
     public static String desxifraRotX(String cadenaXifrada, int desplaçament) {
         String desxifrat = "";
+        if(desplaçament == 0) {
+            return cadenaXifrada;
+        }
         for(int i = 0; i < cadenaXifrada.length(); i++) {
             char caracter = cadenaXifrada.charAt(i);
-            if(isLetter(caracter)) {
-                for(int j = 0; j < majuscules.length; j++) {
-                    if(caracter)
-                }
-            } else {
-                desxifrat+=caracter;
+            desxifrat+= isLetter(caracter) != -1  ? rota(caracter, isLetter(caracter), desplaçament, false) : caracter;
+        }
+        return desxifrat;
+    }
+
+    public static void forcaBrutaRotX(String cadenaXifrada) {
+        System.out.printf("Missatge xifrat: %s%n--------%n", cadenaXifrada);
+        int length = majuscules.length;
+        for(int a = 0; a < length; a++) {
+            if(a == 0) {
+                System.out.printf("(%d)->%s%n ", a, cadenaXifrada);
+                continue;
             }
+            String intentDesxifrar = "";
+            for(int i = 0; i < cadenaXifrada.length(); i++) {
+                char caracter = cadenaXifrada.charAt(i);
+                intentDesxifrar += isLetter(caracter) != -1 ? rota(caracter, isLetter(caracter), a, false) : caracter;
+            }
+            System.out.printf("(%d)->%s%n", a, intentDesxifrar);
         }
     }
 
-    public static boolean isLetter(char caracter) {
+    public static int isLetter(char caracter) {
         for(int i = 0; i < majuscules.length; i++) {
-            if(caracter == minuscules[i] || caracter == majuscules[i]) return true;
+            if(caracter == minuscules[i] || caracter == majuscules[i]) return i;
         }
-        return false;
+        return -1;
     }
-}
+
+    public static char rota(char caracter, int posicio, int desplaçament, boolean right) {
+        int rotated = right ? (posicio + desplaçament) % majuscules.length : (((posicio - desplaçament) + majuscules.length) % majuscules.length);
+        return Character.isUpperCase(caracter) ? majuscules[rotated] : minuscules[rotated];
+    }
+} 
