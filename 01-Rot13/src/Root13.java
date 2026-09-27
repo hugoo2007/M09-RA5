@@ -4,22 +4,23 @@ public class Root13 {
     public static char[] minuscules = chars.toCharArray();
 
     public static void main(String[] args) {
+        Root13 root13 = new Root13();
         String[] msgs = {"ABC","XYZ","Hola, Mr. calçot", "Perdó, per tu què és?"};
         String[] msgsXifrats = new String[msgs.length];
 
         System.out.println("\nXifrat\n---------");
         for(int i = 0; i < msgs.length; i++) {
-            msgsXifrats[i] = xifraRot13(msgs[i]);
+            msgsXifrats[i] = root13.xifraRot13(msgs[i]);
             System.out.printf("%-23s => %s%n", msgs[i], msgsXifrats[i]);
         }
         System.out.println("\nDesxifrat\n---------");
         for(String msg: msgsXifrats) {
-            System.out.printf("%-23s => %s%n", msg, desxifraRot13(msg));
+            System.out.printf("%-23s => %s%n", msg, root13.desxifraRot13(msg));
         }
 
     }
 
-    public static String xifraRot13(String chain) {
+    public String xifraRot13(String chain) {
         String xifrat = "";
         for(int i = 0; i < chain.length(); i++) {
             char caracter = chain.charAt(i);
@@ -51,7 +52,7 @@ public class Root13 {
         return xifrat;
     }
 
-    public static String desxifraRot13(String chain) {
+    public String desxifraRot13(String chain) {
         String desxifrat = "";
         for(int i = 0; i < chain.length(); i++) {
             boolean lower = false;
@@ -83,7 +84,7 @@ public class Root13 {
         return desxifrat;
     }
 
-    public static  boolean IsLetter(char caracter) {
+    public boolean IsLetter(char caracter) {
         caracter = Character.toUpperCase(caracter);
         for(int i = 0; i < majuscules.length; i++) {
             if(caracter == majuscules[i]) return true;
