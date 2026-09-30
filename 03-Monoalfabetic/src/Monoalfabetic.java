@@ -79,7 +79,6 @@ public class Monoalfabetic {
             System.out.printf("%-35s -> %s%n", Tests[i], encriptedTest);
             encriptedTests[i] = encriptedTest;
         }
-        System.out.println();
         System.out.println("Desxifratge: ");
         for(int i = 0; i < encriptedTests.length; i++) {
             System.out.printf("%-35s -> %s%n", encriptedTests[i], monoAlfabetic.DesxifraMonoAlfabet(encriptedTests[i]));
