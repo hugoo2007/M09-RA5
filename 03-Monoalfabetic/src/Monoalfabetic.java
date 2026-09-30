@@ -4,7 +4,7 @@ public class Monoalfabetic {
     public static String caracters = "aáàbcçdeéèfghiíìïjklmnñoóòpqrstuúùüvwxyz";
     public static char[] Alfabet = caracters.toUpperCase().toCharArray();
     public static char[] Permuted = new char[Alfabet.length];
-    public static String[] Tests = {"Test01 àrbritre, coixí, Perímetre", "Test02 Taüll, DÍA, año", "Test03 Peça, Òrrius, Bòlivia"};
+    public static String[] Tests = {"Test 01 àrbritre, coixí, Perímetre", "Test 02 Taüll, DÍA, año", "Test 03 Peça, Òrrius, Bòlivia"};
     
     public char[] PermutaAlfabet(char[] alfabet) {
         List<Character> swifted = new ArrayList<>();
