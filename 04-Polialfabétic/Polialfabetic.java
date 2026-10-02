@@ -17,11 +17,18 @@ public class Polialfabetic {
     public static void main(String[] args) {
         String msgs[] = {"Test 01 àrbitre, coixí, Perimetre", "Test 02 Taüll, DÍA, año", "Test 03 Peça, Òrrius, Bòvila"};
         String msgsXifrats[] = new String[msgs.length];
+        String msgsDesxifrats[] = new String[msgs.length];
         System.out.println("Xifratge:\n----------");
         for(int i = 0; i < msgs.length; i++) {
             randomInit(clauSecreta);
             msgsXifrats[i]=xifraPoliAlfa(msgs[i]);
             System.out.printf("%-34s -> %s%n", msgs[i], msgsXifrats[i]);
+        }
+        System.out.println("Desxifratge:\n----------");
+        for(int i = 0; i < msgsXifrats.length; i++) {
+            randomInit(clauSecreta);
+            msgsDesxifrats[i]=desxifraPoliAlfa(msgsXifrats[i]);
+            System.out.printf("%-34s -> %s%n", msgsXifrats[i], msgsDesxifrats[i]);
         }
     }
 
@@ -46,13 +53,27 @@ public class Polialfabetic {
             permuted[i] = alfabetList.get(i);
         }
     }
+    
+    public static String desxifraPoliAlfa(String cadenaXifrada) {
+        String desxifrat = "";
+        for(int i = 0; i < cadenaXifrada.length(); i++) {
+            permutaAlfabet(alphabetArray);
+            char caracter = cadenaXifrada.charAt(i);
+            int pos = Troba(caracter, false);
+            desxifrat += Character.isLetter(caracter) ? Character.isUpperCase(caracter) ? alphabetArray[pos] : Character.toLowerCase(alphabetArray[pos]) : caracter;
+        }
+        return desxifrat;
+    }
 
     public static int Troba(char caracter, boolean permutar) {
         if(permutar) {
             for(int i = 0; i < permuted.length; i++) {
-                if(alphabetArray[i] == caracter) return i;
+                if(alphabetArray[i] == Character.toUpperCase(caracter)) return i;
             }
-            return -1;
+        } else if(!permutar) {
+            for(int i = 0; i < alphabetArray.length; i++) {
+                if(permuted[i] == Character.toUpperCase(caracter)) return i;
+            }
         }
         return 0;
     }
