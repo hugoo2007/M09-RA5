@@ -21,26 +21,15 @@ public class Polialfabetic {
         System.out.println("Xifratge:\n----------");
         for(int i = 0; i < msgs.length; i++) {
             randomInit(clauSecreta);
-            msgsXifrats[i]=xifraPoliAlfa(msgs[i]);
+            msgsXifrats[i]=hibridRotation(msgs[i], true);
             System.out.printf("%-34s -> %s%n", msgs[i], msgsXifrats[i]);
         }
         System.out.println("Desxifratge:\n----------");
         for(int i = 0; i < msgsXifrats.length; i++) {
             randomInit(clauSecreta);
-            msgsDesxifrats[i]=desxifraPoliAlfa(msgsXifrats[i]);
+            msgsDesxifrats[i]=hibridRotation(msgsXifrats[i], false);
             System.out.printf("%-34s -> %s%n", msgsXifrats[i], msgsDesxifrats[i]);
         }
-    }
-
-    public static String xifraPoliAlfa(String cadena) {
-        String xifrat = "";
-        for(int i = 0; i < cadena.length(); i++) {
-            permutaAlfabet(alphabetArray);
-            char caracter = cadena.charAt(i);
-            int pos = Troba(caracter, true);
-            xifrat += Character.isLetter(caracter) ? Character.isUpperCase(caracter) ? permuted[pos] : Character.toLowerCase(permuted[pos]) : caracter;
-        }
-        return xifrat;
     }
 
     public static void permutaAlfabet(char[] alfabet) {
@@ -53,16 +42,17 @@ public class Polialfabetic {
             permuted[i] = alfabetList.get(i);
         }
     }
-    
-    public static String desxifraPoliAlfa(String cadenaXifrada) {
-        String desxifrat = "";
-        for(int i = 0; i < cadenaXifrada.length(); i++) {
+
+    public static String hibridRotation(String text, boolean xifra) {
+        String cadena = "";
+        for(int i = 0; i < text.length(); i++) {
             permutaAlfabet(alphabetArray);
-            char caracter = cadenaXifrada.charAt(i);
-            int pos = Troba(caracter, false);
-            desxifrat += Character.isLetter(caracter) ? Character.isUpperCase(caracter) ? alphabetArray[pos] : Character.toLowerCase(alphabetArray[pos]) : caracter;
+            char caracter = text.charAt(i);
+            int pos = Troba(caracter, xifra == true ? true : false);
+            if(xifra) cadena+=Character.isLetter(caracter) ? Character.isUpperCase(caracter) ? permuted[pos] : Character.toLowerCase(permuted[pos]): caracter;
+            else cadena+=Character.isLetter(caracter) ? Character.isUpperCase(alphabetArray[pos]) ? alphabetArray[pos] : Character.toUpperCase(alphabetArray[pos]): caracter;
         }
-        return desxifrat;
+        return cadena;
     }
 
     public static int Troba(char caracter, boolean permutar) {
