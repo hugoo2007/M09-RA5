@@ -1,3 +1,4 @@
+package iticbcn.xifratge;
 import java.security.MessageDigest;
 import java.security.SecureRandom;
 import java.util.Arrays;
@@ -6,7 +7,7 @@ import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
-public class AES {
+public class XifradorAES implements Xifrador {
     //Definim el llenguatge de xifrat que farem servir al nostre programa, que en aquest cas, es AES.
     public static final String ALGORISME_XIFRAT = "AES";
 
@@ -25,40 +26,8 @@ public class AES {
     //fent els vectors/Arrays2D d'aquesta mida. Això es especific, ja que es cosa de cada tipus de xifratge.
     //pero en aquest cas, tot IV, que ajuda a que sigui unic cada missatge, serà SEMPRE de 16 bytes.
     public static final int MIDA_IV = 16;
-    private static byte[] iv = new byte[MIDA_IV]; //Creem l'array de 16 bytes, tal y com hem dit abans.
-    private static final String CLAU = "AbreteSesamo"; //Aquí definim la clau, que bàsicament, farà servir per encriptar els blocs de 16 bytes.
-    public static void main(String[] args) {
-
-        //Això no té més misteri, bàsicament, estem fent un array amb els textos per xifrar.
-        String msgs[] = {"Lorem ipsum dicet",
-                "Hola Andrés cómo está tu cuñado",
-                "Àgora illa Ôtto"};
-
-        for (int i = 0; i < msgs.length; i++) { //Encara menys misteri, els iterem.
-            String msg = msgs[i];
-
-            byte[] bXifrats = null; //Aqui, estem creant l'array que contindrà el text xifrat. 
-            //Recormem que, AES xifra per bytes, així que, per tant, el xifratge ens retornarà un array d'aquests.
-            String desxifrat = ""; //Aquí, declarem l'String que generarà el resultat desxifrat.
-            try {
-                bXifrats = xifraAES(msg, CLAU); //Li donem un valor a la referència nula, que, es la seguent: Xifra el missatge de la possició corresponent,
-                //i, que agafi la nostre clau.
-                //Internament, tampoc cal endirsar-se especialment, pero bàsicament, agafa la clau, fa 14 variants, i encripta el bloc corresponent aquest nombre de vegades.
-                desxifrat = desxifraAES(bXifrats, CLAU); //FA exactament el mateix, pero en ordre invers, te complexitat tècnica, pero això es cosa del programa. Desxifrar es possible gràcies a que
-                //que fem servir la mateixa clau, i a més a més, reutilitzem l'iv, ja que si no seria impossible..
-            } catch (Exception e) { //Un catch en cas de no poder encriptar.
-                System.err.println("Error de xifrat: "
-                        + e.getLocalizedMessage());
-            }
-
-            System.out.println("--------------------");
-            System.out.println("Msg: " + msg);
-            System.out.println("Enc: " + new String(bXifrats));
-            System.out.println("DEC: " + desxifrat);
-        }
-    }
-
-    public static byte[] xifraAES(String msg, String clau) throws Exception { //Aquí començem el procés de xifratge.
+    private byte[] iv = new byte[MIDA_IV]; //Creem l'array de 16 bytes, tal y com hem dit abans.
+    public byte[] xifraAES(String msg, String clau) throws Exception { //Aquí començem el procés de xifratge.
         //Obtenir els bytes segons l'String
         byte[] Bytes = msg.getBytes(); //Convertim a un array de bytes el nostre missatge.
 
@@ -93,7 +62,7 @@ public class AES {
 
     //Arriba el desxifratge, on només comentaré les parts que realment hi canvien.
 
-    public static String desxifraAES(byte[] bIvMsgXifrat, String clau) throws Exception {
+    public String desxifraAES(byte[] bIvMsgXifrat, String clau) throws Exception {
         //Extreiem l'iv
         byte[] iv = Arrays.copyOfRange(bIvMsgXifrat, 0, 16);
 
@@ -113,6 +82,24 @@ public class AES {
 
         //Retornem el missatge desxifrat
         return new String(desxifrat);
+    }
+
+    @Override
+    public TextXifrat xifra(String msg, String clau) throws ClauNoSuportada {
+        try {
+            return new TextXifrat(xifraAES(msg, clau));
+        } catch(Exception e) {
+            throw new ClauNoSuportada("Aquesta clau no es suportada per l'algoritme AES.");
+        }
+    }
+
+    @Override
+    public String desxifra(TextXifrat xifrat, String clau) throws ClauNoSuportada {
+        try {
+            return new String(desxifraAES(xifrat.getBytes(), clau));
+        } catch(Exception e) {
+            throw new ClauNoSuportada("Error desxifrant, aquesta clau no es suportada per l'algoritme AES.");
+        }
     }
 
     //Bàsicament. Text 1 en bytes XOR amb IV unic -> Xifratge AES -> Xifrat 1 -> Xifrat1 XOR Text 2 -> seguim el bucle...
