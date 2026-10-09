@@ -117,5 +117,6 @@ public class AES {
         return new String(desxifrat);
     }
 
-    //Básicament. Text 1 en bytes XOR amb IV unic -> Xifratge AES -> Xifrat 1 XOR Text 2 -> seguim el bucle...
+    //Bàsicament. Text 1 en bytes XOR amb IV unic -> Xifratge AES -> Xifrat 1 -> Xifrat1 XOR Text 2 -> seguim el bucle...
+    //Bàsicament, comencem fen un XOR, un o l'altre pero no els dos vol dir. I genera un conjunt de bytes que xifra amb AES (CBC) i es converteix en el xifrat del ext 1. L'agafa, i el compara amb xor de nou amb el text 2, i així en bucle.
 }
