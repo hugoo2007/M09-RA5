@@ -15,8 +15,8 @@ public class TestXifratge {
         };
 
         String[] msgs = {
-            "Test 01: Àgil, Òrbita, Vàlid",
-            "Test 02: Caràcters especials ¡¿?~123[]{}"
+            "Test 01: Àlgid, Ülrich, Vàlid",
+            "Test 02: Caràcters especials ¡!¿?*-123[]{}#@"
         };
 
         String[][] claus = {

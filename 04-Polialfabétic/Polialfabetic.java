@@ -49,7 +49,7 @@ public class Polialfabetic {
             char caracter = text.charAt(i);
             int pos = Troba(caracter, xifra == true ? true : false);
             if(xifra) cadena+=Character.isLetter(caracter) ? Character.isUpperCase(caracter) ? permuted[pos] : Character.toLowerCase(permuted[pos]): caracter;
-            else cadena+=Character.isLetter(caracter) ? Character.isUpperCase(alphabetArray[pos]) ? alphabetArray[pos] : Character.toUpperCase(alphabetArray[pos]): caracter;
+            else cadena+=Character.isLetter(caracter) ? Character.isUpperCase(caracter) ? alphabetArray[pos] : Character.toLowerCase(alphabetArray[pos]): caracter;
         }
         return cadena;
     }

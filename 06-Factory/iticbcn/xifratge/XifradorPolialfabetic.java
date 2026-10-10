@@ -11,7 +11,7 @@ public class XifradorPolialfabetic implements Xifrador {
         public char[] alphabetArray = caracters.toUpperCase().toCharArray();
         public char[] permuted = new char[alphabetArray.length]; 
 
-    public void randomInit(int clauSecreta) {
+    public void randomInit(long clauSecreta) {
         random = new Random(clauSecreta);
     }
 
@@ -33,7 +33,7 @@ public class XifradorPolialfabetic implements Xifrador {
             char caracter = text.charAt(i);
             int pos = Troba(caracter, xifra == true ? true : false);
             if(xifra) cadena+=Character.isLetter(caracter) ? Character.isUpperCase(caracter) ? permuted[pos] : Character.toLowerCase(permuted[pos]): caracter;
-            else cadena+=Character.isLetter(caracter) ? Character.isUpperCase(alphabetArray[pos]) ? alphabetArray[pos] : Character.toUpperCase(alphabetArray[pos]): caracter;
+            else cadena+=Character.isLetter(caracter) ? Character.isUpperCase(caracter) ? alphabetArray[pos] : Character.toLowerCase(alphabetArray[pos]): caracter;
         }
         return cadena;
     }
@@ -49,5 +49,25 @@ public class XifradorPolialfabetic implements Xifrador {
             }
         }
         return 0;
+    }
+
+    @Override 
+    public TextXifrat xifra(String msg, String clau) throws ClauNoSuportada {
+        try {
+            randomInit(Long.parseLong(clau));
+            return new TextXifrat(hibridRotation(msg, true).getBytes());
+        } catch(Exception e) {
+            throw new ClauNoSuportada("La clau per xifrat Polialfabètic ha de ser un String convertible a long");
+        }
+    }
+
+    @Override 
+    public String desxifra(TextXifrat xifrat, String clau) throws ClauNoSuportada {
+        try {
+            randomInit(Long.parseLong(clau));
+            return hibridRotation(xifrat.toString(), false);
+        } catch(Exception e) {
+            throw new ClauNoSuportada("La clau per xifrat Polialfabètic ha de ser un String convertible a long");
+        }
     }
 }

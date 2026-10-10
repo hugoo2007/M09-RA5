@@ -1,5 +1,5 @@
 package iticbcn.xifratge;
 
 public abstract class AlgorismeFactory {
-    public abstract Xifrador crearXifrador();
+    public abstract Xifrador creaXifrador();
 }

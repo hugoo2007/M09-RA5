@@ -5,7 +5,7 @@ public class XifradorRotX implements Xifrador {
     public char[] minuscules = caracters.toCharArray();
     public char[] majuscules = caracters.toUpperCase().toCharArray();
 
-    public String xifraRotX(String cadena, int desplaçament) {
+    public String xifraRotX(String cadena, int desplaçament) throws Exception {
         String xifrat= "";
         if(desplaçament == 0) {
             return cadena;
@@ -17,7 +17,7 @@ public class XifradorRotX implements Xifrador {
        return xifrat;
     }
 
-    public String desxifraRotX(String cadenaXifrada, int desplaçament) {
+    public String desxifraRotX(String cadenaXifrada, int desplaçament) throws Exception {
         String desxifrat = "";
         if(desplaçament == 0) {
             return cadenaXifrada;
@@ -56,5 +56,27 @@ public class XifradorRotX implements Xifrador {
     public char rota(char caracter, int posicio, int desplaçament, boolean right) {
         int rotated = right ? (posicio + desplaçament) % majuscules.length : (((posicio - desplaçament) + majuscules.length) % majuscules.length);
         return Character.isUpperCase(caracter) ? majuscules[rotated] : minuscules[rotated];
+    }
+
+    @Override 
+    public TextXifrat xifra(String msg, String clau) throws ClauNoSuportada {
+        try {
+            int clauInt = Integer.parseInt(clau);
+            if(clauInt < 0 || clauInt > 40) throw new Exception();
+            return new TextXifrat(xifraRotX(msg, clauInt).getBytes());
+        } catch (Exception e) {
+            throw new ClauNoSuportada("Clau de RotX ha de ser un sencer de 0 a 40");
+        } 
+    }
+
+    @Override 
+    public String desxifra(TextXifrat xifrat, String clau) throws ClauNoSuportada {
+        try {
+            int clauInt = Integer.parseInt(clau);
+            if(clauInt < 0 || clauInt > 40) throw new Exception();
+            return desxifraRotX(xifrat.toString(), clauInt);
+        } catch (Exception e) {
+            throw new ClauNoSuportada("Clau de RotX ha de ser un sencer de 0 a 40");
+        } 
     }
 } 
