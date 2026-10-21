@@ -34,7 +34,7 @@ public class ClauPublica {
             System.out.println("=========================================");
             System.out.println("Clau privada: " + strClauPriv); //Imprimim les claus privades.
         } catch (Exception e) {
-            System.out.println("Excepció general trobada durant el xifratge. Aquí tens més informació: " + e.getMessage()); //Capturem qualsevol mena de possible excepció.
+            System.out.println("Excepció general trobada durant el xifratge. Aquí tens més informació: " + e.getMessage()); //Capturem qualsevol mena de possible excepció al procés de xifratge/desxifratge o generació de clau, els quals llençen un Exception, que ha de ser si o si capturat.
         }
 
     }
